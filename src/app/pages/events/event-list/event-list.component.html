@@ -1,0 +1,17 @@
+<h1>Список мероприятий</h1>
+<app-modal [title]="'Информация о событии'">
+    <app-selected-event [event]="selectedEvent$ | async"></app-selected-event>
+</app-modal>
+<div class="search-row mb-3">
+    <input type="text" class="form-control" placeholder="Поиск по теме" (input)="searchChange($event.target.value)">
+</div>
+<div class="event-list" *ngIf="items$ | async as items">
+    <ul class="list-group">
+        <li class="list-group-item" *ngFor="let item of items">
+            <span>
+                {{item.theme}}
+            </span>
+            <button class="btn btn-success" style="float:right;" (click.prevent)="showDetails(item)">Просмотр</button>
+        </li>
+    </ul>
+</div>

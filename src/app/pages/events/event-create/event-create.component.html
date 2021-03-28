@@ -1,0 +1,54 @@
+<h1>Добавление мероприятия</h1>
+<div class="create-form" [formGroup]="createEventFormGroup">
+    <div class="mb-3">
+        <label class="form-label">ФИО</label>
+        <input type="text" class="form-control" placeholder="Введите ФИО" formControlName="fullName">
+        <app-control-error [control]="getControl('fullName')"></app-control-error>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Подразделение</label>
+        <input type="text" class="form-control" placeholder="Введите подразделение" formControlName="subdivision">
+        <app-control-error [control]="getControl('subdivision')"></app-control-error>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Тема</label>
+        <input type="text" class="form-control" placeholder="Введите тему" formControlName="theme">
+        <app-control-error [control]="getControl('theme')"></app-control-error>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Список событий</label>
+        <select class="form-control" placeholder="Выберите события" formControlName="eventList" multiple>
+            <option *ngFor="let option of eventOptions" [ngValue]="option.value">{{option.text}}</option>
+        </select>
+        <app-control-error [control]="getControl('eventList')"></app-control-error>
+    </div>
+    <div class="mb-3">
+        <div class="mb-1">
+            <label class="form-label">Описание события</label>
+            <textarea [hidden]="getControl('takeFromFile').value" class="form-control"
+                placeholder="Введите описание события" formControlName="content"></textarea>
+            <input [hidden]="!getControl('takeFromFile').value" class="form-control" type="file"
+                formControlName="contentFile">
+            <app-control-error [hidden]="getControl('takeFromFile').value" [control]="getControl('content')">
+            </app-control-error>
+            <app-control-error [hidden]="!getControl('takeFromFile').value" [control]="getControl('contentFile')">
+            </app-control-error>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="takeFromFile" formControlName="takeFromFile">
+            <label class="form-check-label" for="takeFromFile">
+                Загрузить файл
+            </label>
+        </div>
+    </div>
+    <div *ngIf="alert$ | async as alert" class="alert" [class]="'alert-' + alert?.type">{{alert?.text}}</div>
+    <div class="mb-3 d-flex justify-content-between" style="padding-top: 30px;">
+        <button type="button" class="btn btn-danger w-200" style="width: 200px;"
+            (click.prevent)="reset()">Сбросить</button>
+        <button type="button" [disabled]="loading$ | async" class="btn btn-success w-200" style="width: 200px;"
+            #saveBtn>
+            <span [hidden]="loading$ | async">Сохранить</span>
+            <span [hidden]="!(loading$ | async)" class="spinner-border text-light spinner-border-sm"></span>
+        </button>
+    </div>
+</div>
